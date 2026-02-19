@@ -106,12 +106,13 @@ flowchart LR
     IMA --> LCA["L. Colic"]:::sub
     IMA --> SIGA["Sigmoid A."]:::sub
     IMA --> SRA["Sup. Rectal"]:::sub
-    MCA -.->|"Marginal A."| LCA
+    MCA <-.->|"Marginal A."| LCA
     A --> MSAR["Median Sacral"]:::branch
     A --> CIA["Common Iliac"]:::major
     CIA --> EIA["External Iliac"]:::branch
     EIA --> FEM["Femoral A."]:::sub
     EIA --> INFE["Inf. Epigastric"]:::sub
+    INFE -.->|"anastomosis"| SUPE["Sup. Epigastric<br/>(from Int. Thoracic)"]:::sub
     CIA --> IIA["Internal Iliac"]:::branch
     IIA --> SGLUT["Sup. Gluteal"]:::sub
     IIA --> IGLUT["Inf. Gluteal"]:::sub
@@ -148,7 +149,8 @@ flowchart RL
     HAP["Hepatic A.<br/>30% O2"]:::sub --> LIVER
     SMV["SMV"]:::major --> PV
     SPLV["Splenic V."]:::major --> PV
-    LGV["Gastric V."]:::branch --> PV
+    LLGV["L. Gastric V."]:::branch --> PV
+    RRGV["R. Gastric V."]:::branch --> PV
     PDV["Pancreaticod. V."]:::branch --> PV
     IMV["IMV"]:::major --> SPLV
     SRV["Sup. Rectal V."]:::portal --> IMV
@@ -156,7 +158,7 @@ flowchart RL
     IRV["Inf. Rectal V."]:::branch --> IILV
     AN1["1. דליות וושט ⚠️"]:::anas
     AN2["2. טחורים"]:::anas
-    AN3["3. Caput Medusa"]:::anas
+    AN3["3. Caput Medusa<br/>(Paraumbilical V.)"]:::anas
     AN4["4. Retroperitoneal"]:::anas`
 };
 
