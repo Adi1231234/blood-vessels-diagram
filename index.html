@@ -106,13 +106,13 @@ flowchart LR
     IMA --> LCA["L. Colic"]:::sub
     IMA --> SIGA["Sigmoid A."]:::sub
     IMA --> SRA["Sup. Rectal"]:::sub
-    MCA <-.->|"Marginal A."| LCA
+    MCA -.->|"Marginal A.<br/>anastomosis"| LCA
     A --> MSAR["Median Sacral"]:::branch
     A --> CIA["Common Iliac"]:::major
     CIA --> EIA["External Iliac"]:::branch
     EIA --> FEM["Femoral A."]:::sub
     EIA --> INFE["Inf. Epigastric"]:::sub
-    INFE -.->|"anastomosis"| SUPE["Sup. Epigastric<br/>(from Int. Thoracic)"]:::sub
+    SUPE["Sup. Epigastric<br/>(← Int. Thoracic)"]:::sub -.->|"anastomosis"| INFE
     CIA --> IIA["Internal Iliac"]:::branch
     IIA --> SGLUT["Sup. Gluteal"]:::sub
     IIA --> IGLUT["Inf. Gluteal"]:::sub
