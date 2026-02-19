@@ -21,9 +21,8 @@ body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: #e
 .dot-red { background: #e94560; box-shadow: 0 0 8px #e94560; }
 .dot-blue { background: #6495ED; box-shadow: 0 0 8px #6495ED; }
 
-.diagram-wrapper { background: rgba(255,255,255,0.97); border-radius: 16px; overflow: hidden; touch-action: none; cursor: grab; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-.diagram-wrapper.grabbing { cursor: grabbing; }
-.diagram-wrapper svg { transform-origin: 0 0; display: block; }
+.diagram-wrapper { background: rgba(255,255,255,0.97); border-radius: 16px; overflow: auto; -webkit-overflow-scrolling: touch; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-height: 70vh; }
+.diagram-wrapper svg { display: block; min-width: 900px; height: auto; }
 
 .controls { display: flex; justify-content: center; gap: 8px; margin: 10px 0; }
 .controls button { background: rgba(255,255,255,0.1); color: #ddd; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 8px 16px; font-size: 0.9em; cursor: pointer; backdrop-filter: blur(5px); font-family: 'Heebo', sans-serif; transition: all 0.2s; }
@@ -72,51 +71,20 @@ body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: #e
 <div class="footer">נוצר אוטומטית • כלי הדם מסודרים לפי היררכית הסתעפות</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.diagram-wrapper').forEach(container => {
-    let scale = 1, panX = 0, panY = 0, isPanning = false, startX, startY;
-    const svg = container.querySelector('svg');
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.diagram-wrapper').forEach(function(container) {
+    var svg = container.querySelector('svg');
     if (!svg) return;
     svg.removeAttribute('width');
-    svg.style.width = '100%';
-    svg.style.height = 'auto';
+    svg.style.minWidth = '900px';
 
-    function applyTransform() {
-      svg.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + scale + ')';
-    }
-
-    const controls = container.previousElementSibling;
+    var controls = container.previousElementSibling;
     if (controls && controls.classList.contains('controls')) {
-      controls.querySelector('.zoom-in').onclick = function() { scale = Math.min(scale * 1.4, 6); applyTransform(); };
-      controls.querySelector('.zoom-out').onclick = function() { scale = Math.max(scale / 1.4, 0.2); applyTransform(); };
-      controls.querySelector('.zoom-reset').onclick = function() { scale = 1; panX = 0; panY = 0; applyTransform(); };
+      var currentWidth = 900;
+      controls.querySelector('.zoom-in').onclick = function() { currentWidth = Math.min(currentWidth * 1.4, 3000); svg.style.minWidth = currentWidth + 'px'; };
+      controls.querySelector('.zoom-out').onclick = function() { currentWidth = Math.max(currentWidth / 1.4, 350); svg.style.minWidth = currentWidth + 'px'; };
+      controls.querySelector('.zoom-reset').onclick = function() { currentWidth = 900; svg.style.minWidth = '900px'; container.scrollTop = 0; container.scrollLeft = 0; };
     }
-
-    var lastDist = 0;
-    container.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 2) {
-        lastDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-      } else if (e.touches.length === 1) {
-        isPanning = true; startX = e.touches[0].clientX - panX; startY = e.touches[0].clientY - panY;
-      }
-    });
-    container.addEventListener('touchmove', function(e) {
-      e.preventDefault();
-      if (e.touches.length === 2) {
-        var dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-        if (lastDist > 0) { scale = Math.min(Math.max(scale * (dist / lastDist), 0.2), 6); applyTransform(); }
-        lastDist = dist;
-      } else if (e.touches.length === 1 && isPanning) {
-        panX = e.touches[0].clientX - startX; panY = e.touches[0].clientY - startY; applyTransform();
-      }
-    }, { passive: false });
-    container.addEventListener('touchend', function() { isPanning = false; lastDist = 0; });
-
-    container.addEventListener('mousedown', function(e) { isPanning = true; startX = e.clientX - panX; startY = e.clientY - panY; container.classList.add('grabbing'); });
-    container.addEventListener('mousemove', function(e) { if (isPanning) { panX = e.clientX - startX; panY = e.clientY - startY; applyTransform(); } });
-    container.addEventListener('mouseup', function() { isPanning = false; container.classList.remove('grabbing'); });
-    container.addEventListener('mouseleave', function() { isPanning = false; container.classList.remove('grabbing'); });
-    container.addEventListener('wheel', function(e) { e.preventDefault(); scale = Math.min(Math.max(scale * (e.deltaY < 0 ? 1.15 : 0.87), 0.2), 6); applyTransform(); }, { passive: false });
   });
 });
 </script>
