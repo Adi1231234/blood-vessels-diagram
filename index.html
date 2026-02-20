@@ -86,79 +86,179 @@ flowchart LR
     classDef tiny fill:#FDDCB5,color:#333,stroke:#bbb,stroke-width:1px
 
     A["🫀 Abdominal Aorta<br/>T12-L4"]:::aorta
-    A --> IP["Inf. Phrenic A."]:::branch
-    IP --> SSR["Sup. Suprarenal"]:::sub
-    A --> LUM["Lumbar A. x4"]:::branch
-    A --> MSR["Mid. Suprarenal"]:::branch
-    A --> REN["Renal A."]:::major
-    REN --> ISR["Inf. Suprarenal"]:::sub
-    REN --> ANT4["Anterior 4 Seg."]:::sub
-    REN --> POST1["Posterior 1 Seg."]:::sub
-    A --> GON["Gonadal A.<br/>(Testicular/Ovarian)"]:::branch
-    A --> OVA["Ovarian A."]:::branch
-    A --> CT["Celiac Trunk<br/>T12"]:::major
-    CT --> LGA["L. Gastric"]:::branch
-    LGA --> LGAE["Esoph. br."]:::tiny
-    CT --> CHA["Common Hepatic"]:::branch
-    CHA --> HAPr["Hepatic Proper"]:::sub
-    HAPr --> RGA["R. Gastric"]:::tiny
-    HAPr --> LHA["L. Hepatic"]:::tiny
-    HAPr --> RHA["R. Hepatic"]:::tiny
-    RHA --> CysA["Cystic A."]:::tiny
-    CHA --> GDA["Gastroduodenal"]:::sub
-    GDA --> RGOA["R. Gastro-omental"]:::tiny
-    GDA --> SPDA["Sup. Pancreaticod."]:::tiny
-    SPDA --> SUPDUO["Supraduodenal A."]:::tiny
-    CT --> SPA["Splenic A."]:::branch
-    SPA --> LGOA["L. Gastro-omental"]:::tiny
-    SPA --> SGA["Short Gastric"]:::tiny
-    SPA --> DPA["Pancreatic br."]:::tiny
-    SPA --> DORSPANC["Dorsal Pancreatic A."]:::tiny
-    A --> SMA["SMA<br/>L1"]:::major
-    SMA --> IPDA["Inf. Pancreaticod."]:::sub
-    SMA --> JEJ["Jejunal A."]:::sub
-    JEJ --> ARC["Arcades → Vasa Recta"]:::tiny
-    SMA --> ILC["Ileocolic"]:::sub
-    ILC --> APPA["Appendicular A."]:::tiny
-    SMA --> RCA["R. Colic"]:::sub
-    SMA --> MCA["Mid. Colic"]:::sub
-    A --> IMA["IMA<br/>L3"]:::major
-    IMA --> LCA["L. Colic"]:::sub
-    LCA --> LCASC["Ascending br."]:::tiny
-    LCA --> LCDSC["Descending br."]:::tiny
-    IMA --> SIGA["Sigmoid A."]:::sub
-    IMA --> SRA["Sup. Rectal"]:::sub
+
+    subgraph paired ["Paired Branches"]
+        IP["Inf. Phrenic A."]:::branch
+        SSR["Sup. Suprarenal"]:::sub
+        LUM["Lumbar A. x4"]:::branch
+        MSR["Mid. Suprarenal"]:::branch
+        REN["Renal A."]:::major
+        ISR["Inf. Suprarenal"]:::sub
+        ANT4["Anterior 4 Seg."]:::sub
+        POST1["Posterior 1 Seg."]:::sub
+        GON["Gonadal A.<br/>(Testicular/Ovarian)"]:::branch
+        OVA["Ovarian A."]:::branch
+    end
+
+    A --> IP
+    IP --> SSR
+    A --> LUM
+    A --> MSR
+    A --> REN
+    REN --> ISR
+    REN --> ANT4
+    REN --> POST1
+    A --> GON
+    A --> OVA
+
+    subgraph celiac ["Celiac Trunk"]
+        CT["Celiac Trunk<br/>T12"]:::major
+        LGA["L. Gastric"]:::branch
+        LGAE["Esoph. br."]:::tiny
+        CHA["Common Hepatic"]:::branch
+        HAPr["Hepatic Proper"]:::sub
+        RGA["R. Gastric"]:::tiny
+        LHA["L. Hepatic"]:::tiny
+        RHA["R. Hepatic"]:::tiny
+        CysA["Cystic A."]:::tiny
+        GDA["Gastroduodenal"]:::sub
+        RGOA["R. Gastro-omental"]:::tiny
+        SPDA["Sup. Pancreaticod."]:::tiny
+        SUPDUO["Supraduodenal A."]:::tiny
+        SPA["Splenic A."]:::branch
+        LGOA["L. Gastro-omental"]:::tiny
+        SGA["Short Gastric"]:::tiny
+        DPA["Pancreatic br."]:::tiny
+        DORSPANC["Dorsal Pancreatic A."]:::tiny
+    end
+
+    A --> CT
+    CT --> LGA
+    LGA --> LGAE
+    CT --> CHA
+    CHA --> HAPr
+    HAPr --> RGA
+    HAPr --> LHA
+    HAPr --> RHA
+    RHA --> CysA
+    CHA --> GDA
+    GDA --> RGOA
+    GDA --> SPDA
+    SPDA --> SUPDUO
+    CT --> SPA
+    SPA --> LGOA
+    SPA --> SGA
+    SPA --> DPA
+    SPA --> DORSPANC
+
+    subgraph sma ["SMA System"]
+        SMA["SMA<br/>L1"]:::major
+        IPDA["Inf. Pancreaticod."]:::sub
+        JEJ["Jejunal A."]:::sub
+        ARC["Arcades → Vasa Recta"]:::tiny
+        ILC["Ileocolic"]:::sub
+        APPA["Appendicular A."]:::tiny
+        RCA["R. Colic"]:::sub
+        MCA["Mid. Colic"]:::sub
+    end
+
+    A --> SMA
+    SMA --> IPDA
+    SMA --> JEJ
+    JEJ --> ARC
+    SMA --> ILC
+    ILC --> APPA
+    SMA --> RCA
+    SMA --> MCA
+
+    subgraph ima ["IMA System"]
+        IMA["IMA<br/>L3"]:::major
+        LCA["L. Colic"]:::sub
+        LCASC["Ascending br."]:::tiny
+        LCDSC["Descending br."]:::tiny
+        SIGA["Sigmoid A."]:::sub
+        SRA["Sup. Rectal"]:::sub
+    end
+
+    A --> IMA
+    IMA --> LCA
+    LCA --> LCASC
+    LCA --> LCDSC
+    IMA --> SIGA
+    IMA --> SRA
     MCA -.->|"Marginal A.<br/>anastomosis"| LCA
+
     A --> MSAR["Median Sacral"]:::branch
-    A --> CIA["Common Iliac"]:::major
-    CIA --> EIA["External Iliac"]:::branch
-    EIA --> FEM["Femoral A."]:::sub
-    EIA --> INFE["Inf. Epigastric"]:::sub
-    INFE --> CREMA["Cremasteric A."]:::tiny
-    ITA["Int. Thoracic A."]:::branch --> SUPE["Sup. Epigastric"]:::sub
-    ITA --> MUSCPH["Musculophrenic A."]:::sub
+
+    subgraph ita ["Int. Thoracic System"]
+        ITA["Int. Thoracic A."]:::branch
+        SUPE["Sup. Epigastric"]:::sub
+        MUSCPH["Musculophrenic A."]:::sub
+    end
+
+    ITA --> SUPE
+    ITA --> MUSCPH
+
+    subgraph extiliac ["Common Iliac → External"]
+        CIA["Common Iliac"]:::major
+        EIA["External Iliac"]:::branch
+        FEM["Femoral A."]:::sub
+        INFE["Inf. Epigastric"]:::sub
+        CREMA["Cremasteric A."]:::tiny
+    end
+
+    A --> CIA
+    CIA --> EIA
+    EIA --> FEM
+    EIA --> INFE
+    INFE --> CREMA
     SUPE -.->|"anastomosis"| INFE
-    CIA --> IIA["Internal Iliac"]:::branch
-    IIA --> SGLUT["Sup. Gluteal"]:::sub
-    IIA --> IGLUT["Inf. Gluteal"]:::sub
-    IIA --> OBTA["Obturator"]:::sub
-    IIA --> ILIOLUM["Iliolumbar A."]:::sub
-    IIA --> LATSAC["Lateral Sacral A."]:::sub
-    IIA --> INPUD["Int. Pudendal"]:::sub
-    INPUD --> INFRA["Inf. Rectal"]:::tiny
-    INPUD --> PERINA["Perineal A."]:::tiny
-    INPUD --> DORSPA["Dorsal A. Penis/Clitoris"]:::tiny
-    INPUD --> DEEPPA["Deep A. of Penis"]:::tiny
-    DEEPPA --> HELICA["Helicine A."]:::tiny
-    INPUD --> BULBA["A. to Bulb"]:::tiny
-    IIA --> IVA["Inf. Vesical"]:::sub
-    IVA --> VASDEFA["A. to Vas Deferens"]:::tiny
-    IIA --> MRA["Mid. Rectal"]:::sub
-    IIA --> UTA["Uterine A."]:::sub
-    UTA --> ARCA["Arcuate A."]:::tiny
-    ARCA --> RADA["Radial A."]:::tiny
-    RADA --> SPIRA["Spiral A."]:::tiny
-    IIA --> VAGA["Vaginal A."]:::sub`,
+
+    subgraph intiliac ["Common Iliac → Internal"]
+        IIA["Internal Iliac"]:::branch
+        SGLUT["Sup. Gluteal"]:::sub
+        IGLUT["Inf. Gluteal"]:::sub
+        OBTA["Obturator"]:::sub
+        ILIOLUM["Iliolumbar A."]:::sub
+        LATSAC["Lateral Sacral A."]:::sub
+        INPUD["Int. Pudendal"]:::sub
+        INFRA["Inf. Rectal"]:::tiny
+        PERINA["Perineal A."]:::tiny
+        DORSPA["Dorsal A. Penis/Clitoris"]:::tiny
+        DEEPPA["Deep A. of Penis"]:::tiny
+        HELICA["Helicine A."]:::tiny
+        BULBA["A. to Bulb"]:::tiny
+        IVA["Inf. Vesical"]:::sub
+        VASDEFA["A. to Vas Deferens"]:::tiny
+        MRA["Mid. Rectal"]:::sub
+        UTA["Uterine A."]:::sub
+        ARCA["Arcuate A."]:::tiny
+        RADA["Radial A."]:::tiny
+        SPIRA["Spiral A."]:::tiny
+        VAGA["Vaginal A."]:::sub
+    end
+
+    CIA --> IIA
+    IIA --> SGLUT
+    IIA --> IGLUT
+    IIA --> OBTA
+    IIA --> ILIOLUM
+    IIA --> LATSAC
+    IIA --> INPUD
+    INPUD --> INFRA
+    INPUD --> PERINA
+    INPUD --> DORSPA
+    INPUD --> DEEPPA
+    DEEPPA --> HELICA
+    INPUD --> BULBA
+    IIA --> IVA
+    IVA --> VASDEFA
+    IIA --> MRA
+    IIA --> UTA
+    UTA --> ARCA
+    ARCA --> RADA
+    RADA --> SPIRA
+    IIA --> VAGA`,
 
   veins: `%%{init: {'theme':'base','themeVariables':{'fontSize':'14px','fontFamily':'Heebo, Arial','lineColor':'#7899B0'}}}%%
 flowchart RL
@@ -171,54 +271,113 @@ flowchart RL
     classDef anas fill:#F39C12,color:#222,stroke:#777,stroke-width:2px
 
     IVC["🫀 IVC"]:::ivc
-    HV["Hepatic V."] --> IVC
-    MHV["Mid. Hepatic V."]:::branch --> IVC
-    RV["Renal V."] --> IVC
-    IPV["Inf. Phrenic V."] --> IVC
-    LV["Lumbar V. x4"] --> IVC
-    TVR["R. Testicular/Ovarian V."] --> IVC
-    TVL["L. Testicular/Ovarian V."] --> RV
-    ILCV["Common Iliac V."] --> IVC
-    EILV["External Iliac"] --> ILCV
-    IILV["Internal Iliac"] --> ILCV
-    FEMV["Femoral V."] --> EILV
-    PAMPV["Pampiniform Plexus"]:::sub --> TVR
-    PAMPV2["Pampiniform Plexus"]:::sub --> TVL
-    LIVER["Liver Sinusoids"]:::liver --> HV
-    CENTV["Central Veins"]:::sub --> HV
-    PV["Portal Vein<br/>70% blood"]:::portal --> LIVER
-    HAP["Hepatic A.<br/>30% O2"]:::sub --> LIVER
-    SMV["SMV"]:::major --> PV
-    SPLV["Splenic V."]:::major --> PV
-    LLGV["L. Gastric V."]:::branch --> PV
-    RRGV["R. Gastric V."]:::branch --> PV
-    PDV["Pancreaticod. V."]:::branch --> PV
-    APPV["Appendicular V."]:::sub --> ILCOV["Ileocolic V."]:::branch
+
+    subgraph systemic ["Systemic Drainage"]
+        HV["Hepatic V."]
+        MHV["Mid. Hepatic V."]:::branch
+        RV["Renal V."]
+        IPV["Inf. Phrenic V."]
+        LV["Lumbar V. x4"]
+        TVR["R. Testicular/Ovarian V."]
+        TVL["L. Testicular/Ovarian V."]
+        PAMPV["Pampiniform Plexus"]:::sub
+        PAMPV2["Pampiniform Plexus"]:::sub
+        ILCV["Common Iliac V."]
+        EILV["External Iliac"]
+        FEMV["Femoral V."]
+    end
+
+    HV --> IVC
+    MHV --> IVC
+    RV --> IVC
+    IPV --> IVC
+    LV --> IVC
+    TVR --> IVC
+    TVL --> RV
+    ILCV --> IVC
+    EILV --> ILCV
+    FEMV --> EILV
+    PAMPV --> TVR
+    PAMPV2 --> TVL
+
+    subgraph liver ["Liver"]
+        LIVER["Liver Sinusoids"]:::liver
+        CENTV["Central Veins"]:::sub
+        HAP["Hepatic A.<br/>30% O2"]:::sub
+    end
+
+    LIVER --> HV
+    CENTV --> HV
+
+    subgraph portal ["Portal System"]
+        PV["Portal Vein<br/>70% blood"]:::portal
+        SMV["SMV"]:::major
+        SPLV["Splenic V."]:::major
+        LLGV["L. Gastric V."]:::branch
+        RRGV["R. Gastric V."]:::branch
+        PDV["Pancreaticod. V."]:::branch
+        APPV["Appendicular V."]:::sub
+        ILCOV["Ileocolic V."]:::branch
+        IMV["IMV"]:::major
+        SRV["Sup. Rectal V."]:::portal
+    end
+
+    PV --> LIVER
+    HAP --> LIVER
+    SMV --> PV
+    SPLV --> PV
+    LLGV --> PV
+    RRGV --> PV
+    PDV --> PV
+    APPV --> ILCOV
     ILCOV --> SMV
-    IMV["IMV"]:::major --> SPLV
-    SRV["Sup. Rectal V."]:::portal --> IMV
-    MRV["Mid. Rectal V."]:::branch --> IILV
-    IRV["Inf. Rectal V."]:::branch --> IILV
-    INTPUDV["Int. Pudendal V."]:::branch --> IILV
-    PERIV["Perineal V."]:::sub --> INTPUDV
-    DVCLIT["Dorsal V. Clitoris"]:::sub --> INTPUDV
-    PROSTV["Prostatic Venous Plexus"]:::sub --> IILV
-    DORSPENV["Deep Dorsal V. Penis"]:::sub --> PROSTV
-    PROSTV -.->|"metastasis route"| VERTPLX["Vertebral Venous Plexus"]:::sub
-    EXTRECPLX["Ext. Rectal Venous Plexus"]:::sub --> IRV
-    INTRECPLX["Int. Rectal Venous Plexus"]:::sub --> SRV
+    IMV --> SPLV
+    SRV --> IMV
+
+    subgraph pelvic ["Pelvic Veins"]
+        IILV["Internal Iliac"]
+        MRV["Mid. Rectal V."]:::branch
+        IRV["Inf. Rectal V."]:::branch
+        INTPUDV["Int. Pudendal V."]:::branch
+        PERIV["Perineal V."]:::sub
+        DVCLIT["Dorsal V. Clitoris"]:::sub
+        PROSTV["Prostatic Venous Plexus"]:::sub
+        DORSPENV["Deep Dorsal V. Penis"]:::sub
+        VERTPLX["Vertebral Venous Plexus"]:::sub
+        EXTRECPLX["Ext. Rectal Venous Plexus"]:::sub
+        INTRECPLX["Int. Rectal Venous Plexus"]:::sub
+    end
+
+    IILV --> ILCV
+    MRV --> IILV
+    IRV --> IILV
+    INTPUDV --> IILV
+    PERIV --> INTPUDV
+    DVCLIT --> INTPUDV
+    PROSTV --> IILV
+    DORSPENV --> PROSTV
+    PROSTV -.->|"metastasis route"| VERTPLX
+    EXTRECPLX --> IRV
+    INTRECPLX --> SRV
     INTRECPLX --> MRV
-    AN1["1. Esophageal V. ⚠️<br/>דליות וושט"]:::anas
+
+    subgraph anastomoses ["Portosystemic Anastomoses"]
+        AN1["1. Esophageal V. ⚠️<br/>דליות וושט"]:::anas
+        ESOPHV["Esophageal V.<br/>(Azygos)"]:::sub
+        AN2["2. טחורים<br/>Hemorrhoids"]:::anas
+        AN3["3. Caput Medusa"]:::anas
+        PARAUMV["Para-Umbilical V."]:::sub
+        SUPEPIV["Superficial Epigastric V."]:::sub
+        AN4["4. Retroperitoneal"]:::anas
+    end
+
     LLGV -.->|"portal"| AN1
-    ESOPHV["Esophageal V.<br/>(Azygos)"]:::sub -.->|"systemic"| AN1
-    AN2["2. טחורים<br/>Hemorrhoids"]:::anas
+    ESOPHV -.->|"systemic"| AN1
     SRV -.->|"portal"| AN2
     IRV -.->|"systemic"| AN2
-    AN3["3. Caput Medusa"]:::anas
-    PARAUMV["Para-Umbilical V."]:::sub -.->|"portal<br/>(via Lig. Teres)"| PV
-    PARAUMV -.->|"systemic"| SUPEPIV["Superficial Epigastric V."]:::sub
-    PARAUMV -.-> AN3
-    AN4["4. Retroperitoneal"]:::anas`
+    PARAUMV -.->|"portal<br/>(via Lig. Teres)"| PV
+    PARAUMV -.->|"systemic"| SUPEPIV
+    PARAUMV -.-> AN3`
 };
 
 const svgCache = {};
