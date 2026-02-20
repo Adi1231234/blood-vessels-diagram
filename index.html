@@ -17,6 +17,20 @@
   }
   .tab-bar button.active-art { background: #8B0000; color: #fff; }
   .tab-bar button.active-vein { background: #1A5276; color: #fff; }
+  .tab-bar button.active-src { background: #2E7D32; color: #fff; }
+  .sources-area {
+    display: none; width: 100%; height: calc(100vh - 110px); height: calc(100dvh - 110px);
+    overflow-y: auto; background: #111; padding: 12px; direction: rtl;
+  }
+  .sources-area.visible { display: block; }
+  .src-section { margin-bottom: 20px; }
+  .src-section h2 { color: #e88; font-size: 1.1em; margin-bottom: 8px; border-bottom: 1px solid #333; padding-bottom: 4px; }
+  .src-section.veins h2 { color: #6af; }
+  .src-item { background: #1a1a2e; border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; font-size: 0.85em; line-height: 1.5; }
+  .src-vessel { color: #fff; font-weight: 700; }
+  .src-parent { color: #aaa; font-size: 0.85em; }
+  .src-quote { color: #cda; font-style: italic; margin-top: 4px; display: block; }
+  .src-lecture { color: #888; font-size: 0.8em; }
   .diagram-area {
     position: relative;
     width: 100%; height: calc(100vh - 110px); height: calc(100dvh - 110px);
@@ -42,6 +56,7 @@
 <p style="text-align:center;color:#f88;font-size:0.95em;padding:0 10px 4px;">בהצלחה יפה שלי את הכי טובה בעולם!!! ❤️❤️❤️</p>
 
 <div class="tab-bar">
+  <button id="btn-sources" onclick="showTab('sources')">📖 מקורות</button>
   <button id="btn-veins" onclick="showTab('veins')">🔵 ורידים</button>
   <button id="btn-arteries" onclick="showTab('arteries')" class="active-art">🔴 עורקים</button>
 </div>
@@ -49,6 +64,7 @@
 <div class="diagram-area" id="diagram-area">
   <div class="loading" id="loading-msg">טוען תרשים...</div>
 </div>
+<div class="sources-area" id="sources-area"></div>
 
 <div class="controls">
   <button onclick="zoomBy(0.7)" title="הקטן">−</button>
@@ -323,6 +339,22 @@ async function renderDiagram(name) {
 window.showTab = async function(name) {
   document.getElementById('btn-arteries').className = name === 'arteries' ? 'active-art' : '';
   document.getElementById('btn-veins').className = name === 'veins' ? 'active-vein' : '';
+  document.getElementById('btn-sources').className = name === 'sources' ? 'active-src' : '';
+
+  const srcArea = document.getElementById('sources-area');
+  const ctrlArea = document.querySelector('.controls');
+
+  if (name === 'sources') {
+    area.style.display = 'none';
+    ctrlArea.style.display = 'none';
+    srcArea.classList.add('visible');
+    renderSources();
+    return;
+  }
+
+  srcArea.classList.remove('visible');
+  area.style.display = 'block';
+  ctrlArea.style.display = 'flex';
   document.getElementById('loading-msg')?.classList.remove('hidden');
 
   const svgEl = await renderDiagram(name);
@@ -335,6 +367,677 @@ window.showTab = async function(name) {
   // Wait a frame for layout, then fit
   requestAnimationFrame(() => fitToView());
 };
+
+// Sources data
+const sourcesData = {
+  "arteries": [
+    {
+      "vessel": "Aorta",
+      "parent": "Heart",
+      "quote": "כלי דם מרכזיים- Aorta וענפיה ו-IVC והורידים המתנקזים אליו",
+      "lecture": 7
+    },
+    {
+      "vessel": "Celiac Trunk",
+      "parent": "Abdominal Aorta",
+      "quote": "Celiac trunk – עורק קצר מאוד היוצא מהאאורטה הבטנית בגובה T12 ומספק את כל האיברים שהתפתחו מה-foregut",
+      "lecture": 4
+    },
+    {
+      "vessel": "Left Gastric Artery",
+      "parent": "Celiac Trunk",
+      "quote": "Left Gastric Artery (LGA)- הולך רטרו-פריטוניאלית לדופן הקיר האחורי ועולה עד שהוא מגיע ל-Esophageal hiatus, שם הוא שולח סעיפים לשליש התחתון של הוושט, וממשיך ל-Lesser curvature של הקיבה ועושה אנסטמוזות עם הRight gastric artery",
+      "lecture": 4
+    },
+    {
+      "vessel": "Common Hepatic Artery",
+      "parent": "Celiac Trunk",
+      "quote": "Common hepatic artery – רטרופריטוניאלי, מתפצל ל-Hepatic artery proper ול-Gastroduodenal artery",
+      "lecture": 4
+    },
+    {
+      "vessel": "Hepatic Artery Proper",
+      "parent": "Common Hepatic Artery",
+      "quote": "Hepatic artery proper: שולח סעיף שנקרא Right gastric artery רץ ב-Lesser curvature של הקיבה עד שהוא יוצר אנסטומוזות עם ה-Left Gastric Artery",
+      "lecture": 4
+    },
+    {
+      "vessel": "Right Gastric Artery",
+      "parent": "Hepatic Artery Proper",
+      "quote": "שולח סעיף שנקרא Right gastric artery רץ ב-Lesser curvature של הקיבה עד שהוא יוצר אנסטומוזות עם ה-Left Gastric Artery",
+      "lecture": 4
+    },
+    {
+      "vessel": "Right Hepatic Artery",
+      "parent": "Hepatic Artery Proper",
+      "quote": "ה-Proper Hepatic Artery מתפצל ל-Lt./Rt. Hepatic Artery, וכן ל-Cystic Artery לכיס המרה",
+      "lecture": 5
+    },
+    {
+      "vessel": "Left Hepatic Artery",
+      "parent": "Hepatic Artery Proper",
+      "quote": "ה-Proper Hepatic Artery מתפצל ל-Lt./Rt. Hepatic Artery, וכן ל-Cystic Artery לכיס המרה",
+      "lecture": 5
+    },
+    {
+      "vessel": "Cystic Artery",
+      "parent": "Right Hepatic Artery",
+      "quote": "מדובר על אזור בו עובר שער הכבד (Portal hepatic) ועורק הכבד (Proper hepatic artery) ממנו יוצא cystic artery מתוך עורק ההפטי הימני",
+      "lecture": 13
+    },
+    {
+      "vessel": "Gastroduodenal Artery",
+      "parent": "Common Hepatic Artery",
+      "quote": "Gastroduodenal artery: הולך מאחורי ה- Duodenal Bulb, במידה ויש כיב פפטי הוא יכול לשחוק את הדופן של העורק ולגרום לדימום שיכול להוביל למוות",
+      "lecture": 4
+    },
+    {
+      "vessel": "Right Gastro-omental Artery",
+      "parent": "Gastroduodenal Artery",
+      "quote": "Right gastro-omental (gastro-epiploic) arteryרץ ב-Greater curvature של הקיבה ויוצר אנסטומוזות עם ה-Left gastro-omental artery",
+      "lecture": 4
+    },
+    {
+      "vessel": "Superior Pancreaticoduodenal Artery",
+      "parent": "Gastroduodenal Artery",
+      "quote": "Superior pancreaticoduodenal artery- מתפצל לשני סעיפים שמספקים גם את הדאודנום (החלק שהתפתח מה- foregut) וגם את הראש וה-Uncinate process של הלבלב",
+      "lecture": 4
+    },
+    {
+      "vessel": "Supraduodenal Artery",
+      "parent": "Superior Pancreaticoduodenal Artery",
+      "quote": "סעיף נוסף שמתפצל אליו זה הsupradeudenal artery ממספק את הdeudenal valve",
+      "lecture": 4
+    },
+    {
+      "vessel": "Splenic Artery",
+      "parent": "Celiac Trunk",
+      "quote": "Splenic artery הולך רטרו-פריטוניאלית על דופן הקיר האחורי, מספק בדרכו אל הטחול דם ללבלב ולקיבה. מגיע לטחול דרך ה-phrenicosplenic ligament",
+      "lecture": 4
+    },
+    {
+      "vessel": "Left Gastro-omental Artery",
+      "parent": "Splenic Artery",
+      "quote": "Left gastro-omental (gastro-epiploic) artery שרץ ב-Greater curvature עד שהוא פוגש את ה-right gastro-omental artery",
+      "lecture": 4
+    },
+    {
+      "vessel": "Short Gastric Arteries",
+      "parent": "Splenic Artery",
+      "quote": "Short gastric arteries – מס' סעיפים שמספקים את האספקט הפוסטריורי של פונדוס הקיבה",
+      "lecture": 4
+    },
+    {
+      "vessel": "Dorsal Pancreatic Artery",
+      "parent": "Splenic Artery",
+      "quote": "רוב הלבלב מקבל אספקת דם מסעיפים של ה-Dorsal/ Great Pancreatic Artery + Splenic Artery",
+      "lecture": 5
+    },
+    {
+      "vessel": "Superior Mesenteric Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Superior Mesenteric Artery (SMA– יוצא ברמה של 1L מספקים את המידגט (מהדאודנום ועד הכיפוף השמאלי של המעי הגס)",
+      "lecture": 4
+    },
+    {
+      "vessel": "Inferior Pancreaticoduodenal Artery",
+      "parent": "Superior Mesenteric Artery",
+      "quote": "Inferior pancreaticodeudenal artery שעושה אנסטמזוזות עם הsuperior",
+      "lecture": 4
+    },
+    {
+      "vessel": "Jejunal Arteries",
+      "parent": "Superior Mesenteric Artery",
+      "quote": "Jejunal arteries- עוברים במזנטרי של המעי הדק. מתפצלים לarcades ולvasa recta",
+      "lecture": 4
+    },
+    {
+      "vessel": "Ileocolic Artery",
+      "parent": "Superior Mesenteric Artery",
+      "quote": "Ileocolic artery – פיצוליו מספקים את ilium (ileal branches), הצקום וה-Ascending Colon",
+      "lecture": 4
+    },
+    {
+      "vessel": "Right Colic Artery",
+      "parent": "Superior Mesenteric Artery",
+      "quote": "Right colic artery - יוצא לצד ימין ומספק את ה-Ascending Colon",
+      "lecture": 4
+    },
+    {
+      "vessel": "Middle Colic Artery",
+      "parent": "Superior Mesenteric Artery",
+      "quote": "Middle colic artery - מספק את ה- Hepatic flexure וה-Transverse colon",
+      "lecture": 4
+    },
+    {
+      "vessel": "Appendicular Artery",
+      "parent": "Ileocolic Artery",
+      "quote": "appendicular artery(וגם(appendicular vein – עורק בעייתי מבחינה קלינית, מדובר בעורק ללא אנסטמוזות ולכן כאשר הדופן שלו מודלקת יגרם תהליך קרישתי מוגבר, דלקת ונמק",
+      "lecture": 5
+    },
+    {
+      "vessel": "Inferior Mesenteric Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Inferior Mesenteric Artery (IMA) - מספקים את ה-hindgut . יוצא מL3",
+      "lecture": 4
+    },
+    {
+      "vessel": "Left Colic Artery",
+      "parent": "Inferior Mesenteric Artery",
+      "quote": "Left Colic Artery - מתפצל לשני ענפים",
+      "lecture": 4
+    },
+    {
+      "vessel": "Ascending Branch of Left Colic Artery",
+      "parent": "Left Colic Artery",
+      "quote": "Ascending Branch of Left Colic Artery - עולה לכיוון ה-splenic flexure",
+      "lecture": 4
+    },
+    {
+      "vessel": "Descending Branch of Left Colic Artery",
+      "parent": "Left Colic Artery",
+      "quote": "Descending Branch of Left Colic Artery - מתפצל שמאלה לכיוון המעי הגס",
+      "lecture": 4
+    },
+    {
+      "vessel": "Sigmoid Arteries",
+      "parent": "Inferior Mesenteric Artery",
+      "quote": "Sigmoid Arteries - מזינים את המעי הסיגמואידי, מתפצלים ל-Arcades ו-Straight Arteries",
+      "lecture": 4
+    },
+    {
+      "vessel": "Superior Rectal Artery",
+      "parent": "Inferior Mesenteric Artery",
+      "quote": "Superior Rectal Artery - מספק את החלק הפרוקסימלי של הרקטום",
+      "lecture": 4
+    },
+    {
+      "vessel": "Marginal Artery",
+      "parent": "Anastomosis between SMA and IMA",
+      "quote": "Marginal artery - עורק אשר מהווה אנסטמוזה בין IMA לSMA, מדובר בעורק מאוד צר והיכולת שלו לספק דם לא אופטימלית",
+      "lecture": 4
+    },
+    {
+      "vessel": "Internal Thoracic Artery",
+      "parent": "Subclavian Artery",
+      "quote": "הsuperior epigastric artery הוא פיצול של ב internal thoracic artery שמתפצל ל epigastric ול musculophrenic artery",
+      "lecture": 1
+    },
+    {
+      "vessel": "Superior Epigastric Artery",
+      "parent": "Internal Thoracic Artery",
+      "quote": "אספקת הדם לשרירים היא מה superior and inferior episgastric arteries",
+      "lecture": 1
+    },
+    {
+      "vessel": "Musculophrenic Artery",
+      "parent": "Internal Thoracic Artery",
+      "quote": "הsuperior epigastric artery הוא פיצול של ב internal thoracic artery שמתפצל ל epigastric ול musculophrenic artery",
+      "lecture": 1
+    },
+    {
+      "vessel": "Common Iliac Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "External iliac artery, שהוא פיצול של ה-Common iliac artery שמקורו ב-Aorta",
+      "lecture": 1
+    },
+    {
+      "vessel": "External Iliac Artery",
+      "parent": "Common Iliac Artery",
+      "quote": "External iliac artery, שהוא פיצול של ה-Common iliac artery שמקורו ב-Aorta",
+      "lecture": 1
+    },
+    {
+      "vessel": "Inferior Epigastric Artery",
+      "parent": "External Iliac Artery",
+      "quote": "הinferior episgastric הוא פיצול של ה external iliac artery- התסעפות של האאורטה הבטנית לפני שמתפצלת לשרירי הגב והפמור",
+      "lecture": 1
+    },
+    {
+      "vessel": "Femoral Artery",
+      "parent": "External Iliac Artery",
+      "quote": "כאשר ה-External עובר מתחת ל-Inguinal ligament הוא הופך ל-Femoral artery",
+      "lecture": 1
+    },
+    {
+      "vessel": "Internal Iliac Artery",
+      "parent": "Common Iliac Artery",
+      "quote": "Middle Rectal Artery – יוצא מה-Internal iliac artery (פיצול ויסצראלי של ה-anterior trunk)",
+      "lecture": 8
+    },
+    {
+      "vessel": "Renal Arteries",
+      "parent": "Abdominal Aorta",
+      "quote": "Renal arteries – נוכל לראות כי הם יוצאים כס\"מ מתחת ל-SMA",
+      "lecture": 7
+    },
+    {
+      "vessel": "Segmental Arteries",
+      "parent": "Renal Arteries",
+      "quote": "החלק האנטריורי מתפצל לארבעה segmental arteries: superior, anterior superior, anterior inferior, inferior",
+      "lecture": 7
+    },
+    {
+      "vessel": "Superior Suprarenal Artery",
+      "parent": "Inferior Phrenic Artery",
+      "quote": "Superior Suprarenal artery אשר יוצא מה-Inferior phrenic artery",
+      "lecture": 7
+    },
+    {
+      "vessel": "Middle Suprarenal Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Middle Suprarenal artery היוצא ישירות מה-Aorta סמוך ל-Celiac trunk",
+      "lecture": 7
+    },
+    {
+      "vessel": "Inferior Suprarenal Artery",
+      "parent": "Renal Arteries",
+      "quote": "Inferior Suprarenal artery היוצא מה-Renal arteries",
+      "lecture": 7
+    },
+    {
+      "vessel": "Inferior Phrenic Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Superior Suprarenal artery אשר יוצא מה-Inferior phrenic artery",
+      "lecture": 7
+    },
+    {
+      "vessel": "Gonadal Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Gonadal artery – נשים לב שהם לא נמצאים באותו הגובה",
+      "lecture": 7
+    },
+    {
+      "vessel": "Testicular Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Testicular artery– עורק היוצא ישירות מהאאורטה האבדונימלית ומזין את האשך",
+      "lecture": 12
+    },
+    {
+      "vessel": "Ovarian Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "Ovarian artery היוצא ישירות מהאאורטה, ומגיע דרך ה suspensory ligament ומספק דם לשחלות",
+      "lecture": 11
+    },
+    {
+      "vessel": "Lumbar Arteries",
+      "parent": "Abdominal Aorta",
+      "quote": "4 Lumbar arteries ו- Iliolumbar artery",
+      "lecture": 7
+    },
+    {
+      "vessel": "Iliolumbar Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "Iliolumbar artery שהינו שלוחה פוסטריורית של ה-Internal iliac artery",
+      "lecture": 7
+    },
+    {
+      "vessel": "Median Sacral Artery",
+      "parent": "Abdominal Aorta",
+      "quote": "עורקים המספקים את הסקרום - Median sacral artery + 4 Lateral sacral arteries",
+      "lecture": 7
+    },
+    {
+      "vessel": "Lateral Sacral Arteries",
+      "parent": "Internal Iliac Artery",
+      "quote": "עורקים המספקים את הסקרום - Median sacral artery + 4 Lateral sacral arteries",
+      "lecture": 7
+    },
+    {
+      "vessel": "Middle Rectal Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "Middle Rectal Artery – יוצא מה-Internal iliac artery (פיצול ויסצראלי של ה-anterior trunk) ומספק את ה -Anorectal junction",
+      "lecture": 8
+    },
+    {
+      "vessel": "Inferior Rectal Artery",
+      "parent": "Internal Pudendal Artery",
+      "quote": "Inferior Rectal Artery – יוצא מה -Internal pudendal artery, שהוא בעצמו גם מגיע מה - Internal iliac artery",
+      "lecture": 8
+    },
+    {
+      "vessel": "Internal Pudendal Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "ה– internal pudendal artery, שהוא אחד מה– anterior branch of internal iliac arteries",
+      "lecture": 11
+    },
+    {
+      "vessel": "Uterine Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "ה-transverse cervical ligament מוביל בתוכו את ה - uterine artery",
+      "lecture": 11
+    },
+    {
+      "vessel": "Vaginal Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "vaginal branch שעושה אנסטומוזות עם הvaginal artety",
+      "lecture": 11
+    },
+    {
+      "vessel": "Arcuate Artery",
+      "parent": "Uterine Artery",
+      "quote": "בתוך המיומטריום יש את ה arcuate artery",
+      "lecture": 11
+    },
+    {
+      "vessel": "Radial Artery",
+      "parent": "Arcuate Artery",
+      "quote": "ממנו יוצאים פיצולים radial artery שנוצנים שלוחות בזאליות לשכבה הבזאלית של האנדומטריום",
+      "lecture": 11
+    },
+    {
+      "vessel": "Spiral Artery",
+      "parent": "Radial Artery",
+      "quote": "כשהשכבה הפונקציונלית גדלה אז מה רדיאל מתפתחים ה spinal artery שמאפשרים התעבות הרירית",
+      "lecture": 11
+    },
+    {
+      "vessel": "Perineal Artery",
+      "parent": "Internal Pudendal Artery",
+      "quote": "בהמשך של התעלה, ישנה התפצלות ל-perineal artery vein& nerve שהולכים ל-superficial perineal pouch/space",
+      "lecture": 11
+    },
+    {
+      "vessel": "Dorsal Artery of Clitoris",
+      "parent": "Internal Pudendal Artery",
+      "quote": "הצטלבות נוספת תהיה ב- Dorsal artery vein & nerve of clitoris – אשר יעברו דרך ה-deep perineal pouch כדי להגיע ליעדם",
+      "lecture": 11
+    },
+    {
+      "vessel": "Inferior Vesical Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "מה-internal iliac artery יוצא עורק שנקרא inferior vesical artery",
+      "lecture": 12
+    },
+    {
+      "vessel": "Artery of Vas Deferens",
+      "parent": "Inferior Vesical Artery",
+      "quote": "ממנו יוצא סעיף הנקרא artery of vas deferens והוא העורק המזין את ה-Vas deferens והאפידידימיס",
+      "lecture": 12
+    },
+    {
+      "vessel": "Cremasteric Artery",
+      "parent": "Inferior Epigastric Artery",
+      "quote": "Cremasteric artery- עורק קטן, ענף של ה-inferior epigastric artery. הוא מספק את ה-cremasteric muscle",
+      "lecture": 12
+    },
+    {
+      "vessel": "Dorsal Arteries of Penis",
+      "parent": "Internal Pudendal Artery",
+      "quote": "Dorsal arteries – העורקים המספקים את העור והsuperficial fascia",
+      "lecture": 12
+    },
+    {
+      "vessel": "Deep Arteries of Penis",
+      "parent": "Internal Pudendal Artery",
+      "quote": "Deep arteries – שני עורקים, ממוקמים ב-corpus cavernosa ושולחים בתוכם שלוחות. בעת זקפה הם מתרחבים",
+      "lecture": 12
+    },
+    {
+      "vessel": "Helicine Arteries",
+      "parent": "Deep Arteries of Penis",
+      "quote": "Helicine artery- נמצאים בתוך הcorpus cavernosum. בעלי צורה מסולסלת וכשהם עוברים ואזודליטציה ומתמלאים בדם הם מתיישרים",
+      "lecture": 12
+    },
+    {
+      "vessel": "Artery to Bulb",
+      "parent": "Internal Pudendal Artery",
+      "quote": "Artery to bulb",
+      "lecture": 12
+    },
+    {
+      "vessel": "Superior Gluteal Artery",
+      "parent": "Internal Iliac Artery",
+      "quote": "בנוסף גם הSuperior gluteal artery העובר מעל הpiriformis muscle",
+      "lecture": 15
+    },
+    {
+      "vessel": "Dorsal Artery of Penis",
+      "parent": "Internal Pudendal Artery",
+      "quote": "הFrenulum מהווה חיבור בין הGlans לבין הPrepuce (העורלה) ועובר בו סעיף של הdorsal artery של הפין",
+      "lecture": 15
+    }
+  ],
+  "veins": [
+    {
+      "vessel": "Inferior Vena Cava",
+      "parent": "Right Atrium",
+      "quote": "כלי דם מרכזיים- Aorta וענפיה ו-IVC והורידים המתנקזים אליו",
+      "lecture": 7
+    },
+    {
+      "vessel": "Portal Vein",
+      "parent": "Liver Sinusoids",
+      "quote": "הוריד הפורטלי מתחיל בחיבור של superior mesenteric vein SMV) שמלווה את superior mesenteric artery + splenic vein שנמצא מאחורי הקיבה",
+      "lecture": 5
+    },
+    {
+      "vessel": "Superior Mesenteric Vein",
+      "parent": "Portal Vein",
+      "quote": "הוריד הפורטלי מתחיל בחיבור של superior mesenteric vein SMV) שמלווה את superior mesenteric artery",
+      "lecture": 5
+    },
+    {
+      "vessel": "Splenic Vein",
+      "parent": "Portal Vein",
+      "quote": "splenic vein שנמצא מאחורי הקיבה",
+      "lecture": 5
+    },
+    {
+      "vessel": "Inferior Mesenteric Vein",
+      "parent": "Splenic Vein",
+      "quote": "ה inferior mesenteric vein (IMV) מתנקז ל splenic vein",
+      "lecture": 5
+    },
+    {
+      "vessel": "Left Gastric Vein",
+      "parent": "Portal Vein",
+      "quote": "קיימות אנסטמוזות בין ורידי הוושט לווריד הפורטלי דרך Left gastric vein",
+      "lecture": 15
+    },
+    {
+      "vessel": "Right Gastric Vein",
+      "parent": "Portal Vein",
+      "quote": "דם לא מחומצן וללא נוטריינטים –Splenic Vein, Lt.+Rt. Gastric Vein, Pancreaticoduodenal Vein",
+      "lecture": 5
+    },
+    {
+      "vessel": "Pancreaticoduodenal Vein",
+      "parent": "Portal Vein",
+      "quote": "דם לא מחומצן וללא נוטריינטים –Splenic Vein, Lt.+Rt. Gastric Vein, Pancreaticoduodenal Vein",
+      "lecture": 5
+    },
+    {
+      "vessel": "Hepatic Veins",
+      "parent": "Inferior Vena Cava",
+      "quote": "כלל ה-central veins מתנקזים ל- Hepatic Veins. מה-Hepatic Veins הדם מתנקז ל-IVC לפני שהוא עובר את הסרעפת",
+      "lecture": 5
+    },
+    {
+      "vessel": "Middle Hepatic Vein",
+      "parent": "Inferior Vena Cava",
+      "quote": "(למעט Middle Hepatic Vein שבחלק מהמקרים מתנקז ל- IVC לאחר שעבר את הסרעפת)",
+      "lecture": 5
+    },
+    {
+      "vessel": "Central Veins",
+      "parent": "Hepatic Veins",
+      "quote": "הדם מתנקז ל-Central Vein ממנו מתחיל ניקוז הדם הסיסטמי. כלל ה-central veins מתנקזים ל- Hepatic Veins",
+      "lecture": 5
+    },
+    {
+      "vessel": "Superior Rectal Vein",
+      "parent": "Inferior Mesenteric Vein",
+      "quote": "Superior rectal vein – מתנקז ל-IMV, שמתנקז ל-splenic vein ומשם למערכת הפורטלית",
+      "lecture": 8
+    },
+    {
+      "vessel": "Middle Rectal Vein",
+      "parent": "Internal Iliac Vein",
+      "quote": "Middle rectal vein – מתנקז ל-Iliac veins (סירקולציה סיסטמית)",
+      "lecture": 8
+    },
+    {
+      "vessel": "Inferior Rectal Vein",
+      "parent": "Internal Pudendal Vein",
+      "quote": "Inferior rectal vein – מתנקז לתוך ה-Internal Pudendal Vein וממשיך בסירקולציה הסיסטמית",
+      "lecture": 8
+    },
+    {
+      "vessel": "External Iliac Vein",
+      "parent": "Common Iliac Vein",
+      "quote": "הדם ב-External iliac vein זורם כלפינו, בעוד הדם בעורק זורם החוצה ומטה מהתמונה",
+      "lecture": 1
+    },
+    {
+      "vessel": "Common Iliac Vein",
+      "parent": "Inferior Vena Cava",
+      "quote": "את וריד הכליה ל-External iliac vein",
+      "lecture": 8
+    },
+    {
+      "vessel": "Internal Iliac Vein",
+      "parent": "Common Iliac Vein",
+      "quote": "והם מחוברים ללא מסתמים לinternal iliac vein",
+      "lecture": 12
+    },
+    {
+      "vessel": "Renal Veins",
+      "parent": "Inferior Vena Cava",
+      "quote": "V – Renal vein (האנטריורי ביותר)",
+      "lecture": 7
+    },
+    {
+      "vessel": "Left Renal Vein",
+      "parent": "Inferior Vena Cava",
+      "quote": "הסיבה העיקרית להופעת אותן דליות באשך שמאל היא מאחר והניקוז הורידי שלו הוא לתוך הLeft renal vein בלחץ גבוה יותר",
+      "lecture": 15
+    },
+    {
+      "vessel": "Azygos Vein",
+      "parent": "Superior Vena Cava",
+      "quote": "בגובה T12 עוברים ה-Aorta, ה-Azygous vein וה-Thoracic duct",
+      "lecture": 7
+    },
+    {
+      "vessel": "Testicular Veins",
+      "parent": "IVC/Left Renal Vein",
+      "quote": "* Testicular veins (Pampiniform plexus)",
+      "lecture": 1
+    },
+    {
+      "vessel": "Left Testicular Vein",
+      "parent": "Left Renal Vein",
+      "quote": "Testicular vein- בצד שמאל מתנקז לleft renal vein",
+      "lecture": 12
+    },
+    {
+      "vessel": "Right Testicular Vein",
+      "parent": "Inferior Vena Cava",
+      "quote": "ובצד ימין מתנקז ישירות לIVC (הדגיש למבחן)",
+      "lecture": 12
+    },
+    {
+      "vessel": "Pampiniform Venous Plexus",
+      "parent": "Testicular Veins",
+      "quote": "Pampiniform venous plexus- קבוצת הורידים המנקזת את האשך ומתנקזת ל-testicular vein",
+      "lecture": 12
+    },
+    {
+      "vessel": "Internal Pudendal Vein",
+      "parent": "Internal Iliac Vein",
+      "quote": "משם הוא רץ בדופן הלטרלית של ה– ischioanal fossa יחד עם ה– pudendal nerve ושניהם מושכים לכיוון ה– triangle urogenital דרך ה– pudendal canal",
+      "lecture": 11
+    },
+    {
+      "vessel": "Perineal Vein",
+      "parent": "Internal Pudendal Vein",
+      "quote": "בהמשך של התעלה, ישנה התפצלות ל-perineal artery vein& nerve",
+      "lecture": 11
+    },
+    {
+      "vessel": "Dorsal Vein of Clitoris",
+      "parent": "Internal Pudendal Vein",
+      "quote": "הצטלבות נוספת תהיה ב- Dorsal artery vein & nerve of clitoris",
+      "lecture": 11
+    },
+    {
+      "vessel": "Prostatic Venous Plexus",
+      "parent": "Internal Iliac Vein",
+      "quote": "ורידי הפרוסטטה- prostatic venous plexus נמצאים בין הפאציה לקפסולה והם מחוברים ללא מסתמים לinternal iliac vein",
+      "lecture": 12
+    },
+    {
+      "vessel": "Deep Dorsal Vein of Penis",
+      "parent": "Prostatic Venous Plexus",
+      "quote": "לוחצים על הוריד deep dorsal vein ומונעים החזרת דם אחורה במהלך זקפה",
+      "lecture": 12
+    },
+    {
+      "vessel": "Vertebral Venous Plexus",
+      "parent": "Superior Vena Cava",
+      "quote": "החשיבות מתבטאת בעיקר בשליחת גרורות סרטניות מהפרוסטטה לכיוון עמוד השדרה, דבר המתאפשר בשל החיבור בין האיברים",
+      "lecture": 15
+    },
+    {
+      "vessel": "External Rectal Venous Plexus",
+      "parent": "Inferior Rectal Vein",
+      "quote": "בחלקו הדיסטלי של התעלה האנאלית מתחת לעור קיים External rectal venous plexus (ניקוז דרך inferior rectal vein)",
+      "lecture": 8
+    },
+    {
+      "vessel": "Internal Rectal Venous Plexus",
+      "parent": "Superior and Middle Rectal Veins",
+      "quote": "בסאב מוקוזה פרוקסימלית ל- external ישנו Internal Rectal venous plexus",
+      "lecture": 8
+    },
+    {
+      "vessel": "Esophageal Veins",
+      "parent": "Azygos System",
+      "quote": "החיבור הכי משמעותי והכי מסוכן, בין ה- Esophageal Veins (סיסטמי, מתנקז לוריד האזיגוס) ל-Lt. Gastric Veins (פורטלי ומנקז את ה-1/3 התחתון של הושט)",
+      "lecture": 5
+    },
+    {
+      "vessel": "Para-Umbilical Veins",
+      "parent": "Portal System",
+      "quote": "חיבור בין ה-Para-Umbilical Veins (פורטלים) לבין ה-Superificial Epigastric Veins (סיסטמיים)",
+      "lecture": 5
+    },
+    {
+      "vessel": "Superficial Epigastric Veins",
+      "parent": "External Iliac Vein",
+      "quote": "חיבור בין ה-Para-Umbilical Veins (פורטלים) לבין ה-Superificial Epigastric Veins (סיסטמיים)",
+      "lecture": 5
+    },
+    {
+      "vessel": "Lumbar Veins",
+      "parent": "Inferior Vena Cava",
+      "quote": "חיבור בין ה-Ascending / Descending retroperitoneal colic veins (פורטליים) לבין ה-Lumbar Veins (סיסטמיים)",
+      "lecture": 5
+    },
+    {
+      "vessel": "Appendicular Vein",
+      "parent": "Ileocolic Vein",
+      "quote": "appendicular artery(וגם(appendicular vein – עורק בעייתי מבחינה קלינית",
+      "lecture": 5
+    }
+  ]
+};
+
+function renderSources() {
+  const el = document.getElementById('sources-area');
+  if (el.innerHTML) return;
+  let html = '<div class="src-section"><h2>🔴 עורקים</h2>';
+  for (const s of sourcesData.arteries) {
+    html += `<div class="src-item"><span class="src-vessel">${s.vessel}</span> <span class="src-parent">← ${s.parent}</span><span class="src-quote">"${s.quote}"</span><span class="src-lecture">הרצאה ${s.lecture}</span></div>`;
+  }
+  html += '</div><div class="src-section veins"><h2>🔵 ורידים</h2>';
+  for (const s of sourcesData.veins) {
+    html += `<div class="src-item"><span class="src-vessel">${s.vessel}</span> <span class="src-parent">← ${s.parent}</span><span class="src-quote">"${s.quote}"</span><span class="src-lecture">הרצאה ${s.lecture}</span></div>`;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
 
 // Start
 showTab('arteries');
