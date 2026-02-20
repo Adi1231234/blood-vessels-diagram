@@ -78,7 +78,8 @@ flowchart LR
     REN --> ISR["Inf. Suprarenal"]:::sub
     REN --> ANT4["Anterior 4 Seg."]:::sub
     REN --> POST1["Posterior 1 Seg."]:::sub
-    A --> GON["Gonadal A."]:::branch
+    A --> GON["Gonadal A.<br/>(Testicular/Ovarian)"]:::branch
+    A --> OVA["Ovarian A."]:::branch
     A --> CT["Celiac Trunk<br/>T12"]:::major
     CT --> LGA["L. Gastric"]:::branch
     LGA --> LGAE["Esoph. br."]:::tiny
@@ -95,11 +96,13 @@ flowchart LR
     SPA --> LGOA["L. Gastro-omental"]:::tiny
     SPA --> SGA["Short Gastric"]:::tiny
     SPA --> DPA["Pancreatic br."]:::tiny
+    SPA --> DORSPANC["Dorsal Pancreatic A."]:::tiny
     A --> SMA["SMA<br/>L1"]:::major
     SMA --> IPDA["Inf. Pancreaticod."]:::sub
     SMA --> JEJ["Jejunal A."]:::sub
     JEJ --> ARC["Arcades → Vasa Recta"]:::tiny
     SMA --> ILC["Ileocolic"]:::sub
+    ILC --> APPA["Appendicular A."]:::tiny
     SMA --> RCA["R. Colic"]:::sub
     SMA --> MCA["Mid. Colic"]:::sub
     A --> IMA["IMA<br/>L3"]:::major
@@ -112,16 +115,28 @@ flowchart LR
     CIA --> EIA["External Iliac"]:::branch
     EIA --> FEM["Femoral A."]:::sub
     EIA --> INFE["Inf. Epigastric"]:::sub
+    INFE --> CREMA["Cremasteric A."]:::tiny
     SUPE["Sup. Epigastric<br/>(← Int. Thoracic)"]:::sub -.->|"anastomosis"| INFE
     CIA --> IIA["Internal Iliac"]:::branch
     IIA --> SGLUT["Sup. Gluteal"]:::sub
     IIA --> IGLUT["Inf. Gluteal"]:::sub
     IIA --> OBTA["Obturator"]:::sub
+    IIA --> ILIOLUM["Iliolumbar A."]:::sub
+    IIA --> LATSAC["Lateral Sacral A."]:::sub
     IIA --> INPUD["Int. Pudendal"]:::sub
     INPUD --> INFRA["Inf. Rectal"]:::tiny
+    INPUD --> PERINA["Perineal A."]:::tiny
+    INPUD --> DORSPA["Dorsal A. Penis/Clitoris"]:::tiny
+    INPUD --> DEEPPA["Deep A. of Penis"]:::tiny
+    INPUD --> BULBA["A. to Bulb"]:::tiny
     IIA --> IVA["Inf. Vesical"]:::sub
+    IVA --> VASDEFA["A. to Vas Deferens"]:::tiny
     IIA --> MRA["Mid. Rectal"]:::sub
-    IIA --> UTA["Uterine A."]:::sub`,
+    IIA --> UTA["Uterine A."]:::sub
+    UTA --> ARCA["Arcuate A."]:::tiny
+    ARCA --> RADA["Radial A."]:::tiny
+    RADA --> SPIRA["Spiral A."]:::tiny
+    IIA --> VAGA["Vaginal A."]:::sub`,
 
   veins: `%%{init: {'theme':'base','themeVariables':{'fontSize':'14px','fontFamily':'Heebo, Arial','lineColor':'#7899B0'}}}%%
 flowchart RL
@@ -138,13 +153,16 @@ flowchart RL
     RV["Renal V."] --> IVC
     IPV["Inf. Phrenic V."] --> IVC
     LV["Lumbar V. x4"] --> IVC
-    TVR["R. Testicular → IVC"] --> IVC
-    TVL["L. Testicular → Renal"] --> RV
+    TVR["R. Testicular/Ovarian V."] --> IVC
+    TVL["L. Testicular/Ovarian V."] --> RV
     ILCV["Common Iliac V."] --> IVC
     EILV["External Iliac"] --> ILCV
     IILV["Internal Iliac"] --> ILCV
     FEMV["Femoral V."] --> EILV
+    PAMPV["Pampiniform Plexus"]:::sub --> TVR
+    PAMPV2["Pampiniform Plexus"]:::sub --> TVL
     LIVER["Liver Sinusoids"]:::liver --> HV
+    CENTV["Central Veins"]:::sub --> HV
     PV["Portal Vein<br/>70% blood"]:::portal --> LIVER
     HAP["Hepatic A.<br/>30% O2"]:::sub --> LIVER
     SMV["SMV"]:::major --> PV
@@ -156,6 +174,11 @@ flowchart RL
     SRV["Sup. Rectal V."]:::portal --> IMV
     MRV["Mid. Rectal V."]:::branch --> IILV
     IRV["Inf. Rectal V."]:::branch --> IILV
+    INTPUDV["Int. Pudendal V."]:::branch --> IILV
+    PROSTV["Prostatic Venous Plexus"]:::sub --> IILV
+    DORSPENV["Deep Dorsal V. Penis"]:::sub --> PROSTV
+    RECPLXV["Rectal Venous Plexus"]:::sub --> SRV
+    RECPLXV --> MRV
     AN1["1. דליות וושט ⚠️"]:::anas
     AN2["2. טחורים"]:::anas
     AN3["3. Caput Medusa<br/>(Paraumbilical V.)"]:::anas
