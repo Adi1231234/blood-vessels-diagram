@@ -350,7 +350,7 @@ flowchart RL
 
     IILV --> ILCV
     MRV --> IILV
-    IRV --> IILV
+    IRV --> INTPUDV
     INTPUDV --> IILV
     PERIV --> INTPUDV
     DVCLIT --> INTPUDV
@@ -370,6 +370,9 @@ flowchart RL
         SUPEPIV["Superficial Epigastric V."]:::sub
         AN4["4. Retroperitoneal"]:::anas
     end
+
+    LV -.->|"systemic"| AN4
+    IMV -.->|"portal<br/>(Colic V.)"| AN4
 
     LLGV -.->|"portal"| AN1
     ESOPHV -.->|"systemic"| AN1
